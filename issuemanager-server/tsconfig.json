@@ -1,0 +1,12 @@
+{
+	"ts-node": {
+		"files": true
+	},
+	"compilerOptions": {
+		"types": [
+			"jest", "node"
+		],
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true,
+	}
+}
