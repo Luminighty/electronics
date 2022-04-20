@@ -13,19 +13,17 @@ export async function connectToDatabase() {
 
 	await client.connect();
 
-	const db: mongoDB.Db = client.db(process.env.DB_NAME);
-
-	//await db.command(validator());
+	const db: mongoDB.Db = client.db(
+		process.env.NODE_ENV == "test" 
+			? process.env.TEST_DB_NAME
+			: process.env.DB_NAME);
+	await db.command(validator());
 
 	const issueCollection = db.collection<Issue>(
 		process.env.ISSUES_COLLECTION_NAME || "issues"
 	);
 
 	collections.issues = issueCollection;
-
-	console.log(
-		`Successfully connected to database: ${db.databaseName} and collection: ${issueCollection.collectionName}`
-	);
 }
 
 function validator() {
