@@ -62,6 +62,8 @@ projectRouter
 		if (req.body.shortDescription !== null)
 			project.shortDescription = req.body.shortDescription;
 		
+		await project.save();
+		res.send(project);
 	} catch {
 		res.status(404)
 			.send(`Project with id '${req.params.id}' not found.`);
