@@ -1,8 +1,7 @@
 import supertest from "supertest";
-import { app } from "../src/app";
-import { connectToDatabase } from "../src/services/database.service";
+import { main } from "../src/app";
 
-describe("Issue Manager", () => {
+describe("Chips Route", () => {
 	const user = {
 		username: "TestUser", password: "123",
 	};
@@ -13,7 +12,7 @@ describe("Issue Manager", () => {
 	};
 
 	beforeEach(async () => {
-		await connectToDatabase();
+		const app = await main();
 		requestHandle = supertest(app);
 	});
 

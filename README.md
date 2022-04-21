@@ -1,3 +1,4 @@
 # issuemanager
 
-An issue manager/tracker app using the MEAN architecture (MongoDB, Express, Angular, NodeJs)
+An basic electronics app using the MEAN architecture (MongoDB, Express, Angular, NodeJs)
+
