@@ -1,10 +1,13 @@
 table {
   width: 100%;
+  max-width: 800px;
+  margin: auto;
 }
 
-.datasheet-icon {
-  color: white;
+h1 {
+  text-align: center;
 }
+
 
 .datasheet-icon:hover {
   color: lightgray;
@@ -26,4 +29,14 @@ table {
 
 .mat-column-creator {
   padding: 0px 10px;
+  text-align: center;
+}
+
+.mat-row:hover {
+  cursor: pointer;
+  background-color: rgba($color: #ffffff, $alpha: 0.04);
+}
+
+.new-chip {
+  float: right;
 }

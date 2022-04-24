@@ -1,0 +1,29 @@
+<h1>Login</h1>
+
+<form [formGroup]="form" (submit)="submit()">
+  <mat-form-field appearance="fill">
+    <mat-label>Username</mat-label>
+    <input
+      matInput
+      type="text"
+      required
+      name="username"
+      formControlName="username"
+    />
+    <mat-error *ngIf="username.invalid">This field is required.</mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Password</mat-label>
+    <input
+      matInput
+      type="text"
+      required
+      name="password"
+      formControlName="password"
+    />
+    <mat-error *ngIf="password.invalid">This field is required.</mat-error>
+  </mat-form-field>
+  <div class="buttons">
+    <button mat-raised-button color="primary">Login</button>
+  </div>
+</form>

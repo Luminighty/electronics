@@ -1,0 +1,23 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "start",
+			"path": "electronics-client/",
+			"problemMatcher": [],
+			"label": "npm: start - electronics-client",
+			"detail": "ng serve",
+			"runOptions": {"runOn": "folderOpen", "instanceLimit": 1}
+		},
+		{
+			"type": "npm",
+			"script": "start",
+			"path": "electronics-server/",
+			"problemMatcher": [],
+			"label": "npm: start - electronics-server",
+			"detail": "npm start",
+			"runOptions": {"runOn": "folderOpen", "instanceLimit": 1}
+		}
+	]
+}

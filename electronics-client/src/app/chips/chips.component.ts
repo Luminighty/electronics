@@ -1,17 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-
-
-export interface ChipElement {
-  code: string;
-  name: string;
-  datasheet?: string;
-  creator?: string;
-}
-
-const ELEMENT_DATA: ChipElement[] = [
-  {code: "NE555", name: "Single Timer", datasheet: "https://www.hestore.hu/prod_getfile.php?id=15"},
-  {code: "DDF0", name: "Duel Disk Field v0", creator: "Luminight"},
-]
+import { MatDialog } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
+import { Observable } from 'rxjs';
+import { ChipDetailsComponent } from '../chip-details/chip-details.component';
+import { AuthService } from '../core/auth.service';
+import { ChipService } from '../core/chip.service';
+import { Chip } from '../domain/chip';
 
 @Component({
   selector: 'app-chips',
@@ -19,12 +13,34 @@ const ELEMENT_DATA: ChipElement[] = [
   styleUrls: ['./chips.component.scss']
 })
 export class ChipsComponent implements OnInit {
-  displayedColumns: string[] = ["code", "name", "datasheet", "creator"];
-  chips = ELEMENT_DATA;
+  displayedColumns: string[] = ["code", "name", "creator"];
 
-  constructor() { }
+  dataSource!: MatTableDataSource<Chip>;
+  chips!: Observable<Chip[]>;
+  isAdmin!: boolean;
 
-  ngOnInit(): void {
+  constructor(
+    private chipService: ChipService,
+    private auth: AuthService,
+    private dialog: MatDialog,
+  ) { }
+
+  async ngOnInit(): Promise<void> {
+    this.getChips();
+    this.isAdmin = this.auth.isAdmin;
+  }
+
+  async deleteChip(chip: Chip): Promise<void> {
+    await this.chipService.deleteChip(chip);
+    this.getChips();
+  }
+
+  private getChips(): void {
+    this.chips = this.chipService.getChips();
+  }
+
+  viewDetails(data: Chip): void {
+    this.dialog.open(ChipDetailsComponent, {data});
   }
 
 }

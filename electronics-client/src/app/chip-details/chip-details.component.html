@@ -1,0 +1,23 @@
+<div id="body">
+  <a class="datasheet" *ngIf="chip.datasheet" href="{{chip.datasheet}}" target="_blank" rel="noopener noreferrer">
+    <mat-icon aria-hidden="false">description</mat-icon>
+    <span>Datasheet</span>
+  </a>
+
+  <h2>{{chip.code}} - {{chip.name}}</h2>
+
+  <span *ngIf="chip.creator" class="creator">by {{chip.creator}}</span>
+
+  <p>
+    {{chip.description}}
+  </p>
+
+  <hr>
+  <div>
+    Pin Layout:
+    <app-chip-svg [pins]="chip.pins"></app-chip-svg>
+  </div>
+  <div>
+    <button *ngIf="chip.creator === auth.user._id" mat-raised-button color="primary" (click)="openEditor()">Edit Chip</button>
+  </div>
+</div>

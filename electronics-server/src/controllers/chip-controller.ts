@@ -42,7 +42,8 @@ chipRouter
 		})
 		await chip.save();
 		res.status(201).send(chip);
-	} catch {
+	} catch(err) {
+		console.error(err);
 		res.status(400).send("Bad request");
 	}
 })

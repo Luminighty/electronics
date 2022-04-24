@@ -1,0 +1,37 @@
+<svg
+  [attr.width]="WIDTH+OFFSET_X*2+PINSIZE"
+  [attr.height]="HEIGHT+OFFSET_Y"
+>
+
+  <rect
+    class="chip-rect"
+    [attr.width]="WIDTH - PINSIZE"
+    [attr.height]="HEIGHT"
+    [attr.x]="OFFSET_X + PINSIZE"
+    [attr.y]="OFFSET_Y - PINSIZE"
+  >
+  </rect>
+
+  <path
+    class="chip-nudge"
+    [attr.d]="pathData"
+  ></path>
+
+  <ng-container *ngFor="let pin of pinData">
+    <text
+      class="pin-label"
+      [attr.x]="pin.x + (pin.isRightSide ? PINSIZE + LABEL_OFFSET : -LABEL_OFFSET)"
+      [attr.y]="pin.y"
+      [attr.text-anchor]="pin.textAnchor"
+      baseline-shift="sub"
+      >{{pin.label}}</text>
+    <rect
+      class="pin-rect"
+      [attr.width]="PINSIZE"
+      [attr.height]="PINSIZE"
+      [attr.x]="pin.x"
+      [attr.y]="pin.y">
+    </rect>
+  </ng-container>
+
+</svg>
