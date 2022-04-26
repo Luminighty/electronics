@@ -1,9 +1,10 @@
 import supertest from "supertest";
 import { main } from "../src/app";
+import { UserRole } from "../src/models/user";
 
 describe("Users Route", () => {
 
-	let testUser = {
+	let testUser: any = {
 		username: "Foo",
 		password: "Bar",
 	};
@@ -28,10 +29,22 @@ describe("Users Route", () => {
 				.expect(409);
 		});
 		it("should login with registered user", async () => {
-            await requestHandle
-				.post("/user/login")
-				.send(testUser)
-				.expect(200);
+            const loginResponse = await requestHandle
+					.post("/user/login")
+					.send(testUser)
+					.expect(200);
+			testUser.id = loginResponse._id;
+		});
+
+		it("should find the user by id", async() => {
+			await requestHandle
+				.get(`user/${testUser.id}`)
+				.expect(200)
+				.expect(res =>
+					expect(res.body).toMatchObject({
+						...testUser,
+						role: UserRole.User,
+					}));
 		});
 	});
 });

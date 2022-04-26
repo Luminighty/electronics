@@ -1,0 +1,17 @@
+table {
+  width: 100%;
+}
+.mat-row:hover {
+  cursor: pointer;
+  background-color: rgba($color: #ffffff, $alpha: 0.04);
+}
+.container {
+  width: 100%;
+  max-width: 800px;
+  margin: auto;
+}
+
+.button-container {
+  margin: 20px;
+  text-align: right;
+}

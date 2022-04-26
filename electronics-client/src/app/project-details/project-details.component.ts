@@ -4,21 +4,20 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from '../core/auth.service';
 import { UserService } from '../core/user.service';
-import { Chip } from '../domain/chip';
+import { Project } from '../domain/projects';
 import { User } from '../domain/user';
 
 @Component({
-  selector: 'app-chip-details',
-  templateUrl: './chip-details.component.html',
-  styleUrls: ['./chip-details.component.scss']
+  selector: 'app-project-details',
+  templateUrl: './project-details.component.html',
+  styleUrls: ['./project-details.component.scss']
 })
-export class ChipDetailsComponent implements OnInit {
-
+export class ProjectDetailsComponent implements OnInit {
   public creator?: Observable<User>;
 
   constructor(
-    public dialogRef: MatDialogRef<ChipDetailsComponent>,
-    @Inject(MAT_DIALOG_DATA) public chip: Chip,
+    public dialogRef: MatDialogRef<ProjectDetailsComponent>,
+    @Inject(MAT_DIALOG_DATA) public project: Project,
     public auth: AuthService,
     private userService: UserService,
     private router: Router,
@@ -29,13 +28,13 @@ export class ChipDetailsComponent implements OnInit {
   }
 
   getCreator(): void {
-    if (this.chip.creator)
-      this.creator = this.userService.getUser(this.chip.creator)
+    if (this.project.creator)
+      this.creator = this.userService.getUser(this.project.creator)
   }
 
   openEditor() {
     this.dialogRef.close();
-    this.router.navigate(["/chip/editor", this.chip._id]);
+    this.router.navigate(["/project/editor", this.project._id]);
   }
 
 }

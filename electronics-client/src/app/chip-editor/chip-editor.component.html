@@ -1,59 +1,63 @@
 <h1>{{title}}</h1>
 
 <form [formGroup]="form" (ngSubmit)="submit()">
-  <mat-form-field class="full-width" appearance="fill">
-    <mat-label>Code</mat-label>
-    <input
-      matInput
-      type="text"
-      name="code"
-      required
-      minlength="2"
-      formControlName="code"
-    />
-    <mat-error *ngIf="code.invalid">
-      {{ code.errors! | appErrors }}
-    </mat-error>
-  </mat-form-field>
+  <div class="common">
+    <mat-form-field class="full-width" appearance="fill">
+      <mat-label>Code</mat-label>
+      <input
+        matInput
+        type="text"
+        name="code"
+        required
+        minlength="2"
+        formControlName="code"
+      />
+      <mat-error *ngIf="code.invalid">
+        {{ code.errors! | appErrors }}
+      </mat-error>
+    </mat-form-field>
 
-  <mat-form-field class="full-width" appearance="fill">
-    <mat-label>Name</mat-label>
-    <input
-      matInput
-      type="text"
-      name="name"
-      required
-      minlength="2"
-      formControlName="name"
-    />
-    <mat-error *ngIf="name.invalid">
-      {{ name.errors! | appErrors }}
-    </mat-error>
-  </mat-form-field>
+    <mat-form-field class="full-width" appearance="fill">
+      <mat-label>Name</mat-label>
+      <input
+        matInput
+        type="text"
+        name="name"
+        required
+        minlength="2"
+        formControlName="name"
+      />
+      <mat-error *ngIf="name.invalid">
+        {{ name.errors! | appErrors }}
+      </mat-error>
+    </mat-form-field>
 
-  <mat-form-field class="full-width" appearance="fill">
-    <mat-label>Datasheet URL</mat-label>
-    <input
-      matInput
-      type="text"
-      name="datasheet"
-      formControlName="datasheet"
-    />
-    <mat-error *ngIf="datasheet.invalid">
-      {{ datasheet.errors! | appErrors }}
-    </mat-error>
-  </mat-form-field>
+    <mat-form-field class="full-width" appearance="fill">
+      <mat-label>Datasheet URL</mat-label>
+      <input
+        matInput
+        type="text"
+        name="datasheet"
+        formControlName="datasheet"
+      />
+      <mat-error *ngIf="datasheet.invalid">
+        {{ datasheet.errors! | appErrors }}
+      </mat-error>
+    </mat-form-field>
 
-  <mat-form-field class="full-width" appearance="fill">
-    <mat-label>Description</mat-label>
-    <textarea
-      matInput
-      name="description"
-      formControlName="description"
-    ></textarea>
-  </mat-form-field>
+    <mat-form-field class="full-width" appearance="fill">
+      <mat-label>Description</mat-label>
+      <textarea
+        matInput
+        name="description"
+        formControlName="description"
+      ></textarea>
+    </mat-form-field>
+    <br />
+  </div>
 
-  <div>
+
+  <div class="pins">
     <ng-container formArrayName="pins" >
       <ng-container *ngFor="let pin of pins.controls; index as i">
         <div [formGroupName]="i">
@@ -75,10 +79,10 @@
     <button class="add-pin-btn" mat-mini-fab color="basic" type="button" (click)="addPin()">
       <mat-icon >add</mat-icon>
     </button>
+    <app-chip-svg class="chip-svg" [pins]="pinLabels"></app-chip-svg>
   </div>
 
-  <app-chip-svg class="chip-svg" [pins]="pinLabels"></app-chip-svg>
-
-  <br />
-  <button mat-raised-button color="primary" (submit)="submit()">Submit</button>
+  <button mat-fab class="btn-submit" color="primary" (submit)="submit()">
+    <mat-icon>save</mat-icon>
+  </button>
 </form>

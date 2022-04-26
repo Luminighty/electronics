@@ -6,6 +6,8 @@ import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
 import { ChipEditorComponent } from './chip-editor/chip-editor.component';
+import { ProjectsComponent } from './projects/projects.component';
+import { ProjectEditorComponent } from './project-editor/project-editor.component';
 
 
 const routes: Routes = [{
@@ -14,6 +16,12 @@ const routes: Routes = [{
 }, {
   path: "chip/editor/:id",
   component: ChipEditorComponent,
+}, {
+  path: "project",
+  component: ProjectsComponent,
+}, {
+  path: "project/editor/:id",
+  component: ProjectEditorComponent,
 }, {
   path: "home",
   component: HomeComponent,

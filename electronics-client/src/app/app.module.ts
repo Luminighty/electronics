@@ -26,6 +26,8 @@ import { ChipSvgComponent } from './chip-svg/chip-svg.component';
 import { MatInputModule } from '@angular/material/input';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { ChipEditorComponent } from './chip-editor/chip-editor.component';
+import { ProjectDetailsComponent } from './project-details/project-details.component';
+import { ProjectEditorComponent } from './project-editor/project-editor.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +42,8 @@ import { ChipEditorComponent } from './chip-editor/chip-editor.component';
     ChipDetailsComponent,
     ChipSvgComponent,
     ChipEditorComponent,
+    ProjectDetailsComponent,
+    ProjectEditorComponent,
   ],
   imports: [
     HttpClientModule,

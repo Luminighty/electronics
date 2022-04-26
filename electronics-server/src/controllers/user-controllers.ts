@@ -1,13 +1,23 @@
 import { Router } from "express";
-import { User, UserRole } from "../models/user";
+import { IUser, User, UserRole } from "../models/user";
 import { generateJwt } from "../security/jwt-generator";
 import { hashPassword } from "../security/password-utils";
-
+import { HydratedDocument } from 'mongoose';
 
 export const userRouter = Router();
 
 
 userRouter
+.get("/:id", async (req, res) => {
+	try {
+		const id = req.params.id;
+		const user = await User.findById(id) as HydratedDocument<IUser>;
+		res.send(user);
+	} catch {
+		res.status(404)
+			.send(`Project with id '${req.params.id}' not found.`);
+	}
+})
 .post("/register", async (req, res) => {
 	
 	const username = req.body.username;

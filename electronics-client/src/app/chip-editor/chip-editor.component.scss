@@ -1,9 +1,21 @@
 
 form {
-  min-width: 150px;
-  max-width: 500px;
+  min-width: 300px;
+  display: flex;
+  flex-wrap: wrap;
   width: 100%;
   margin: auto;
+}
+
+form div {
+  flex: 40%;
+  margin: 20px;
+}
+
+@media (max-width: 800px) {
+  form div {
+    flex: 100%;
+  }
 }
 
 .full-width {
@@ -19,4 +31,10 @@ form {
   position: relative;
   top: 0px;
   left: 0px;
+}
+
+.btn-submit {
+  position: absolute;
+  left: 20px;
+  bottom: 20px;
 }

@@ -5,7 +5,7 @@ export interface IProject {
 	shortDescription: string;
 	description: string;
 	creator: Types.ObjectId;
-	chips: Types.Array<Types.ObjectId>,
+	chips: Types.Array<{amount: number, chip: Types.ObjectId}>,
 }
 
 const projectSchema = new Schema<IProject>({
@@ -13,7 +13,7 @@ const projectSchema = new Schema<IProject>({
 	shortDescription: {type: String},
 	description: {type: String},
 	creator: {type: Schema.Types.ObjectId, ref: "User", required: true},
-	chips: [{type: Schema.Types.ObjectId, ref: "Chip"}],
+	chips: [{amount: Number, chip: {type: Schema.Types.ObjectId, ref: "Chip"}}],
 });
 
 export const Project = model<IProject>("Project", projectSchema);

@@ -6,7 +6,7 @@
 
   <h2>{{chip.code}} - {{chip.name}}</h2>
 
-  <span *ngIf="chip.creator" class="creator">by {{chip.creator}}</span>
+  <span *ngIf="creator" class="creator">by {{(creator | async)?.username}}</span>
 
   <p>
     {{chip.description}}
@@ -17,7 +17,7 @@
     Pin Layout:
     <app-chip-svg [pins]="chip.pins"></app-chip-svg>
   </div>
-  <div>
-    <button *ngIf="chip.creator === auth.user._id" mat-raised-button color="primary" (click)="openEditor()">Edit Chip</button>
+  <div *ngIf="chip.creator === auth.user?._id">
+    <button  mat-raised-button color="primary" (click)="openEditor()">Edit Chip</button>
   </div>
 </div>

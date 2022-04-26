@@ -19,7 +19,6 @@ export class ChipService {
   }
 
   createChip(chip: Chip): Observable<Chip> {
-    console.log(chip);
     return this.httpClient.post<Chip>(`/api/chip`, chip);
   }
 

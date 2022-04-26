@@ -1,6 +1,7 @@
 <mat-nav-list>
   <a mat-list-item [routerLink]="['home']">Home</a>
   <a mat-list-item [routerLink]="['chip']">Chips</a>
+  <a mat-list-item [routerLink]="['project']">Projects</a>
   <ng-container *ngIf="!auth.isLoggedIn; else LoggedIn">
     <a mat-list-item [routerLink]="['login']">Login</a>
     <a mat-list-item [routerLink]="['register']">Register</a>

@@ -3,6 +3,7 @@ import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@ang
 import { ActivatedRoute, Router } from '@angular/router';
 import { EMPTY, Observable, switchMap } from 'rxjs';
 import { ChipService } from '../core/chip.service';
+import { URL } from '../core/url.directive';
 import { Chip } from '../domain/chip';
 
 @Component({
@@ -19,12 +20,12 @@ export class ChipEditorComponent implements OnInit {
     code: ['', [Validators.required, Validators.minLength(2)]],
     name: ['', [Validators.required, Validators.minLength(2)]],
     description: [''],
-    datasheet: [''],
+    datasheet: ['', [URL()]],
     pins: this.fb.array([]),
   });
 
   get title(): string {
-    return "";
+    return this.editId ? "Edit Chip" : "New Chip";
   }
 
   constructor(

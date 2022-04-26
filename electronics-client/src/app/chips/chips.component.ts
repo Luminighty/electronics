@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { Observable } from 'rxjs';
+import { EMPTY, Observable } from 'rxjs';
 import { ChipDetailsComponent } from '../chip-details/chip-details.component';
 import { AuthService } from '../core/auth.service';
 import { ChipService } from '../core/chip.service';
+import { UserService } from '../core/user.service';
 import { Chip } from '../domain/chip';
+import { User } from '../domain/user';
 
 @Component({
   selector: 'app-chips',
@@ -15,13 +17,15 @@ import { Chip } from '../domain/chip';
 export class ChipsComponent implements OnInit {
   displayedColumns: string[] = ["code", "name", "creator"];
 
-  dataSource!: MatTableDataSource<Chip>;
   chips!: Observable<Chip[]>;
   isAdmin!: boolean;
 
+  creators: {[key: string]: Observable<User>} = {};
+
   constructor(
     private chipService: ChipService,
-    private auth: AuthService,
+    public auth: AuthService,
+    private userService: UserService,
     private dialog: MatDialog,
   ) { }
 
@@ -31,7 +35,7 @@ export class ChipsComponent implements OnInit {
   }
 
   async deleteChip(chip: Chip): Promise<void> {
-    await this.chipService.deleteChip(chip);
+    this.chipService.deleteChip(chip);
     this.getChips();
   }
 
@@ -41,6 +45,12 @@ export class ChipsComponent implements OnInit {
 
   viewDetails(data: Chip): void {
     this.dialog.open(ChipDetailsComponent, {data});
+  }
+
+  getCreator(chip: Chip): Observable<User> {
+    if (!chip.creator)
+      return EMPTY;
+    return this.userService.getUser(chip.creator);
   }
 
 }

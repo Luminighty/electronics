@@ -13,6 +13,9 @@ export class ErrorsPipe implements PipeTransform {
       return `Title must be at least
         ${value["minlength"]["requiredLength"]} characters long.`;
     }
+    if (value["url"]) {
+      return `This field must be a URL`;
+    }
     return JSON.stringify(value);
   }
 

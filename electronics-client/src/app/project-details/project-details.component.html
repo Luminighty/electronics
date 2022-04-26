@@ -1,0 +1,17 @@
+<div id="body">
+
+
+  <h2>{{project.title}}</h2>
+
+  <span *ngIf="creator" class="creator">by {{(creator | async)?.username}}</span>
+
+  <p>
+    {{project.description}}
+  </p>
+
+  <hr>
+
+  <div *ngIf="project.creator === auth.user?._id">
+    <button  mat-raised-button color="primary" (click)="openEditor()">Edit Chip</button>
+  </div>
+</div>
