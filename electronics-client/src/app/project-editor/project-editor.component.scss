@@ -1,12 +1,30 @@
 
-form {
+form, .chips {
   min-width: 300px;
+  max-width: 600px;
   display: flex;
   flex-wrap: wrap;
   width: 100%;
   margin: auto;
 }
 
+table {
+  width: 100%;
+}
+
+.mat-column-amount {
+  width: 75px;
+}
+.mat-column-amount mat-form-field {
+  width: 75px;
+}
+
 .full-width {
   width: 100%;
+}
+
+.btn-submit {
+  position: absolute;
+  left: 20px;
+  bottom: 20px;
 }

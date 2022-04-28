@@ -1,5 +1,7 @@
 import { Router } from "express";
+import { ObjectId } from "mongodb";
 import { HydratedDocument } from "mongoose";
+import { Chip } from "../models/chip";
 import { IProject, Project } from "../models/project";
 import { UserRole } from "../models/user";
 import { authorize } from "../security/authorize";
@@ -12,9 +14,19 @@ function canModifyProject(user: Express.User, project: HydratedDocument<IProject
 			user.role === UserRole.Admin;
 }
 
+function getFilter(query: any) {
+	if (query.creator && ObjectId.isValid(query.creator)) {
+		query.creator = new ObjectId(query.creator);
+	} else {
+		delete query.creator;
+	}
+	return query;
+}
+
 projectRouter
 .get("/", async (req, res) => {
-	const projects = await Project.find();
+	const filter = getFilter(req.query);
+	const projects = await Project.find(filter);
 	res.send(projects);
 })
 .get("/:id", async (req, res) => {
@@ -54,7 +66,9 @@ projectRouter
 			return res.sendStatus(403);
 
 		project.title = req.body.title || project.title;
-		project.chips = req.body.chips || project.chips;
+
+		if (req.body.chips)
+			project.chips = req.body.chips.filter((chip) => chip.amount > 0);
 
 		if (req.body.description !== null)
 			project.description = req.body.description;
@@ -79,6 +93,65 @@ projectRouter
 
 		project.delete();
 		res.sendStatus(204);
+	} catch {
+		res.status(404)
+			.send(`Project with id '${req.params.id}' not found.`);
+		
+	}
+})
+.post("/:id/chip", authorize(UserRole.User), async (req, res) => {
+	try {
+		const id = req.params.id;
+		const project = await Project.findById(id);
+
+		if (!canModifyProject(req.user, project))
+			return res.sendStatus(403);
+
+		const chipId = req.body.chip;
+		const amount = req.body.amount;
+		const index = project.chips.findIndex((val) => val.chip.equals(chipId));
+		
+		if (index == -1) {
+			const chip = await Chip.findById(chipId);
+			if (chip && amount > 0)
+				project.chips.push({chip: new ObjectId(chipId), amount});
+		} else {
+			project.chips[index].amount += amount;
+		}
+		await project.save();
+		res.send(project);
+	} catch(error) {
+		console.error(error);
+		res.status(404)
+			.send(`Project with id '${req.params.id}' not found.`);
+		
+	}
+})
+.put("/:id/chip", authorize(UserRole.User), async (req, res) => {
+	try {
+		const id = req.params.id;
+		const project = await Project.findById(id);
+
+		if (!canModifyProject(req.user, project))
+			return res.sendStatus(403);
+
+		const chipId = req.body.chip;
+		const amount = req.body.amount;
+		const index = project.chips.findIndex((val) => val.chip.equals(chipId));
+		console.log({method: "put", chipId, index});
+
+		if (index == -1) {
+			const chip = await Chip.findById(chipId);
+			if (chip && amount > 0)
+				project.chips.push({chip: new ObjectId(chipId), amount});
+		} else if(amount > 0) {
+			project.chips[index].amount = amount;
+		} else {
+			project.chips.splice(index, 1);
+		}
+		console.log(project.chips);
+		await project.save();
+		res.send(project);
 	} catch {
 		res.status(404)
 			.send(`Project with id '${req.params.id}' not found.`);

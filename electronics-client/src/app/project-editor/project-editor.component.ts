@@ -2,10 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { EMPTY, Observable, switchMap } from 'rxjs';
+import { EMPTY, forkJoin, map, Observable, switchMap } from 'rxjs';
+import { ChipService } from '../core/chip.service';
 import { ProjectService } from '../core/project.service';
 import { Chip } from '../domain/chip';
-import { ChipAmount, Project } from '../domain/projects';
+import { Project } from '../domain/projects';
+
+interface ChipAmount {
+  amount: number,
+  chip: Chip,
+}
 
 @Component({
   selector: 'app-project-editor',
@@ -15,12 +21,13 @@ import { ChipAmount, Project } from '../domain/projects';
 export class ProjectEditorComponent implements OnInit {
   projectToEdit?: Observable<Project | null>;
   editId?: string;
+  projectChipColumns = ['code', 'name', 'amount'];
+  chips!: ChipAmount[];
 
   form: FormGroup = this.fb.group({
     title: ['', [Validators.required, Validators.minLength(2)]],
     shortDescription: [''],
     description: [''],
-    chips: this.fb.array([]),
   });
 
   get pageTitle(): string {
@@ -32,6 +39,7 @@ export class ProjectEditorComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private projectService: ProjectService,
+    private chipService: ChipService,
     private snackbar: MatSnackBar,
   ) { }
 
@@ -46,7 +54,7 @@ export class ProjectEditorComponent implements OnInit {
     this.projectToEdit.subscribe((project) => {
       this.editId = project?._id;
       this.updateFormFields(project);
-    })
+    });
   }
 
   updateFormFields(project: Project | null) {
@@ -58,14 +66,19 @@ export class ProjectEditorComponent implements OnInit {
       description: project.description,
     })
 
+    forkJoin(project.chips
+      .map((chipAmount) =>
+        this.chipService.getChip(chipAmount.chip)
+        .pipe(map((chip) => ({chip, amount: chipAmount.amount}))))
+    ).subscribe((chips) => this.chips = chips);
   }
-
 
   submit() {
     this.form.markAllAsTouched();
 
     const projectValue = {
       ...this.form.value,
+      chips: this.chips.map((chipAmount) => ({amount: chipAmount.amount, chip: chipAmount.chip._id}))
     }
     console.log(projectValue);
 
@@ -91,26 +104,12 @@ export class ProjectEditorComponent implements OnInit {
     return this.form.get("description") as FormControl;
   }
 
-  get chips(): FormArray {
-    return this.form.get("chips") as FormArray;
-  }
-
-  addChip(chip: Chip) {
-    const values = this.chips.value;
-    const index = values.findIndex((other: ChipAmount) => other.chip == chip._id);
-    if (index != -1) {
-      this.chips.value[index].amount++;
-    } else {
-      const chipForm = this.fb.group({
-        amount: [1, Validators.required, Validators.min(0)],
-        chip: [chip._id, Validators.required],
+  deleteChip(chipId: string) {
+    this.projectService.setChips(this.editId || "", chipId, 0)
+      .subscribe(() => {
+        this.ngOnInit();
+        this.snackbar.open("Chip removed from project", "Close", {duration: 3000})
       });
-      this.chips.push(chipForm);
-    }
-  }
-
-  deleteChip(index: number) {
-    this.chips.removeAt(index);
   }
 
 

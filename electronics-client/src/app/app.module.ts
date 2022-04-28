@@ -24,10 +24,12 @@ import { ChipDetailsComponent } from './chip-details/chip-details.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ChipSvgComponent } from './chip-svg/chip-svg.component';
 import { MatInputModule } from '@angular/material/input';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ChipEditorComponent } from './chip-editor/chip-editor.component';
 import { ProjectDetailsComponent } from './project-details/project-details.component';
 import { ProjectEditorComponent } from './project-editor/project-editor.component';
+import { MatSelectModule } from '@angular/material/select';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   declarations: [
@@ -61,7 +63,9 @@ import { ProjectEditorComponent } from './project-editor/project-editor.componen
     MatSnackBarModule,
     ReactiveFormsModule,
     MatFormFieldModule,
+    MatSelectModule,
     FormsModule,
+    MatCardModule,
   ],
   exports: [],
   providers: [

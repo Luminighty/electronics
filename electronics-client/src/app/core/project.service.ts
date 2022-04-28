@@ -29,4 +29,16 @@ export class ProjectService {
   deleteProject(project: Project): Observable<unknown> {
     return this.httpClient.delete(`/api/project/${project._id}`);
   }
+
+  addChips(projectId: string, chipId: string, amount: number): Observable<Project> {
+    return this.httpClient.post<Project>(`/api/project/${projectId}/chip`, {chip: chipId, amount});
+  }
+
+  setChips(projectId: string, chipId: string, amount: number): Observable<Project> {
+    return this.httpClient.put<Project>(`/api/project/${projectId}/chip`, {chip: chipId, amount});
+  }
+
+  userProjects(userId: string): Observable<Project[]> {
+    return this.httpClient.get<Project[]>(`/api/project?creator=${userId}`);
+  }
 }
